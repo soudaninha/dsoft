@@ -1,0 +1,56 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+</style>
+
+<!-- INSERI ESSA VERIFICAÇÃO DE AMBIENTE PRA CARREGAR OS PDF'S TANTO LOCALMENTE QUANTO NO HEROKU -->
+<% if Rails.env.development? %>
+  <style type="text/css">
+    <%= Rails.application.assets.find_asset('application.css').to_s.html_safe %>
+</style>
+<% end %>
+<div class="container-fluid">
+<%- model_class = Client -%>
+<div class="page-header">
+  <h2>Relatório geral de Servidores DNS <%= image_tag "logo.png" %></h2>
+  Gerado em: <%= Time.now.strftime("%d/%m/%Y %H:%M") %><br />
+  <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+ 
+  </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th><%= model_class.human_attribute_name("email") %></th>
+      <th><%= model_class.human_attribute_name("senha") %></th>
+      <th><%= model_class.human_attribute_name("servidor DNS") %></th>
+      <th><%= model_class.human_attribute_name("cliente") %></th>
+      
+      <th>ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @dns_servers.each do |dns_server| %>
+      <tr>
+        
+        <td><%= dns_server.email %></td>
+        
+        <td><%= dns_server.password %></td>
+        <td><%= dns_server.dns %></td>
+        <td><%= dns_server.client.name %></td>
+        
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total de Servidores DNS cadastrados: <b><%= @total_dns_servers %></b>
+</div>
+
+<%= pie_chart DnsServer.group(:email).count %>

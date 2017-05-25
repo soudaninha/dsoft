@@ -1,0 +1,70 @@
+<%= form_for @ad_user, :html => { :class => "form-horizontal ad_user" } do |f| %>
+
+  <% if @ad_user.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@ad_user.errors.count, "error") %> prohibited this ad_user from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @ad_user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :colaborador, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-3">
+      <%= f.text_field :colaborador, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:colaborador) %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'departamento', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-2">
+      <%= f.select(:departamento, options_for_select([["Administrativo"],["Compras"],["Contabíl / Fiscal"],["Diretoria"],["Engenharia"],["Logistica"],["Produção"],["Projetos"],["RH"],["T.I"],["Vendas"]], @ad_user.departamento), {include_blank: 'Selecione'}, :class => 'form-control') %>
+
+    </div>
+    <%=f.error_span(:departamento) %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'usuário AD', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-3">
+      <%= f.text_field :user_ad, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:user_ad) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :senha, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-2">
+      <%= f.text_field :senha, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:senha) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :ip, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-2">
+      <%= f.text_field :ip, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:ip) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :pastas, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_area :pastas, :class => 'form-control', rows: '5', cols: '2' %>
+    </div>
+    <%=f.error_span(:pastas) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit 'Salvar', data: { disable_with: "Processando..." }, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                ad_users_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

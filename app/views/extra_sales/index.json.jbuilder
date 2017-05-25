@@ -1,0 +1,1 @@
+json.array! @extra_sales, partial: 'extra_sales/extra_sale', as: :extra_sale

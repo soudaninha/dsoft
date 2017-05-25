@@ -1,0 +1,90 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+    // remove o link da impressão
+  }
+} 
+</style>
+
+<%- model_class = Licenca -%>
+<div class="page-header">
+  <h1>Cadastro de Licenças</h1>
+  <%= link_to t('.new', :default => t("helpers.links.new")),
+            new_licenca_path,
+            :class => 'btn btn-primary', id: 'printbtn' %>
+   <%= link_to 'Painel de controle', dashboard_servproject_path, class: 'btn btn-default', id: 'printbtn' %>
+
+   <%= link_to 'Excel Download', licencas_path(:format => :xls, :exportar => 'SIM'), class: 'btn btn-success', id: 'printbtn' %>
+   
+
+   <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name('produto') %></th>
+      <th><%= model_class.human_attribute_name('serial') %></th>
+      <th><%= model_class.human_attribute_name('cód patrimonio') %></th>
+      <th><%= model_class.human_attribute_name('usuário') %></th>
+      <th><%= model_class.human_attribute_name('descrição') %></th>
+      <th><%= model_class.human_attribute_name('status') %></th>
+      <th><%= model_class.human_attribute_name('criado em') %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @licencas.each do |licenca| %>
+      <tr>
+        <td><%= link_to licenca.produto, licenca_path(licenca) %></td>
+        <td><%= licenca.serial %></td>
+        <td><%= licenca.patrimonio.numero_patrimonio %></td>
+        <td><%= licenca.patrimonio.ad_user.colaborador %></td>
+        <td><%= licenca.patrimonio.descricao %></td>
+        <% if licenca.status == 'Sem documentação' %>
+        <td><font color="red"><%= licenca.status %></font></td>
+        
+        <% elsif licenca.status == 'OK - Sem utilização' %>
+        <td><font color="orange"><%= licenca.status %></font></td>
+       
+        <% elsif licenca.status == 'OK - Em uso' %>
+        <td><font color="green"><%= licenca.status %></font></td>
+        <% else %>
+        <td><%= licenca.status %></td>
+        <% end %>
+        
+        <td><%= licenca.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_licenca_path(licenca), :class => 'btn btn-default btn-xs', id: 'printbtn' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      licenca_path(licenca),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger', id: 'printbtn' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>Histórico</h3></div>
+  <div class="panel-body">
+  
+  <h4>Total de licenças cadastradas: <b><%= @conta_licencas %></b></h4>
+<h4>Licenças OK - Em uso: <b><%= @em_uso %></b></h4> 
+<h4>Licenças OK - Sem utilização: <b><%= @sem_utilizar %></b></h4> 
+<h4>Licenças Sem documentação: <b><%= @sem_doc %></b></h4>
+  	
+  </div>
+</div>
+

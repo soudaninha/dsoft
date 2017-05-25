@@ -1,0 +1,23 @@
+<%- model_class = Patrimonio -%>
+<div class="page-header">
+  <h1>Patrimonio</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:numero_patrimonio) %>:</strong></dt>
+  <dd><%= @patrimonio.numero_patrimonio %></dd>
+  <dt><strong><%= model_class.human_attribute_name('descrição') %>:</strong></dt>
+  <dd><%= @patrimonio.descricao %></dd>
+  <dt><strong><%= model_class.human_attribute_name('usuário') %>:</strong></dt>
+  <dd><%= @patrimonio.ad_user.colaborador %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              patrimonios_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_patrimonio_path(@patrimonio), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              patrimonio_path(@patrimonio),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

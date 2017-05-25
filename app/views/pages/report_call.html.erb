@@ -1,0 +1,105 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+
+/*for printer*/
+@media print {
+    #printOnly { }
+        /* write your css rules*/
+
+}
+/*for desktop*/
+    @media screen {
+    #printOnly { display: none;}
+             /*for all display view*/                 
+}
+
+
+</style>
+
+<h1>Análise gráfica de atendimentos <%= image_tag 'dashboard.png' %></h1>
+Periodo informado: <div id="printOnly"><%= @datainicial %> até <%=@datafinal %></div>
+
+<%= form_tag(report_call_path, method: :get) do %>
+ 
+<div class="form-group">			  
+		<div class="row">
+			  <div class="col-lg-3">	  
+		<%= date_field_tag(:date1, params[:date1], placeholder: 'data inicial', class: 'form-control', id: 'printbtn') %>
+		<%= date_field_tag(:date2, params[:date2], placeholder: 'data final', class: 'form-control', id: 'printbtn') %>	
+		<div id="printbtn"><%= check_box_tag :analitico, params[:analitico] %> Exibir relatório analítico</div> 
+		</div>
+		</div>
+		<br />	
+		<%= submit_tag "Consultar", class: 'btn btn-success', id: 'printbtn' %>
+<% end %>
+<button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+
+<%= link_to 'Painel de controle', dashboard_servproject_path, class: 'btn btn-default', id: 'printbtn' %>
+
+</p>
+ 
+<div class="panel panel-default">
+  <div class="panel-heading" >Percentual de atendimentos por departamento </div>
+  <h5 class="panel-body">
+  <% if @datainicial.present? && @datafinal.present? %>
+  <%= pie_chart Callcenter.where("created_at::date BETWEEN ? AND ?", @datainicial, @datafinal).group('callcenters.department').count %>
+  <% else %>
+  <%= pie_chart Callcenter.where("created_at::date = ?", Date.today).group('callcenters.department').count %>
+  <% end %>
+  </h5>
+  </div>
+
+<div class="panel panel-default">
+  <div class="panel-heading" >Quantidade de atendimentos por funcionário </div>
+  <h5 class="panel-body">
+  <% if @datainicial.present? && @datafinal.present? %>
+  <%= bar_chart Callcenter.order('callcenters.employee').where("created_at::date BETWEEN ? AND ?", @datainicial, @datafinal).group('callcenters.employee').count("callcenters.employee") %>
+  <% else %>
+  <%= bar_chart Callcenter.order('callcenters.employee').where("created_at::date = ?", Date.today).group('callcenters.employee').count("callcenters.employee") %>
+  <% end %>
+ </h5>
+</div>
+
+<div class="panel panel-default">
+<div class="panel-heading" >Análise gráfica anual de atendimentos por mês </div>
+  <h5 class="panel-body">
+  <div id="chart-container-m"><%= @call_annual.render() %></div>
+</h5>
+</div>
+
+<% if @callcenters.present? %>
+<div class="panel panel-default">
+<div class="panel-heading" >Relatório analítico </div>
+  <div class="panel-body">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>funcionário</th>
+      <th>problema</th>
+      <th>solução</th>
+      <th>status</th>
+      <th>criado em</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <% @callcenters.each do |callcenter| %>
+      <tr>
+        <td><%= callcenter.employee %></td>
+        <td><%= callcenter.problem %></td>
+        <td><%= callcenter.solution %></td>
+        <td><%= callcenter.status %></td>
+        <td><%= callcenter.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<% end %>

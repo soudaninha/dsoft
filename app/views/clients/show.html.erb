@@ -1,0 +1,54 @@
+<%- model_class = Client -%>
+<div class="page-header">
+  <h1>Cliente</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name("nome") %>:</strong></dt>
+  <dd><%= @client.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name("endereço") %>:</strong></dt>
+  <dd><%= @client.address %></dd>
+  <dt><strong><%= model_class.human_attribute_name("bairro") %>:</strong></dt>
+  <dd><%= @client.neighborhood %></dd>
+  <dt><strong><%= model_class.human_attribute_name("cidade") %>:</strong></dt>
+  <dd><%= @client.cidade_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name("UF") %>:</strong></dt>
+  <dd><%= @client.estado_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name("Cep") %>:</strong></dt>
+  <dd><%= @client.zipcode %></dd>
+  <dt><strong><%= model_class.human_attribute_name("fone") %>:</strong></dt>
+  <dd><%= @client.phone %></dd>
+  <dt><strong><%= model_class.human_attribute_name("celular") %>:</strong></dt>
+  <dd><%= @client.cellphone %></dd>
+  <dt><strong><%= model_class.human_attribute_name("Cnpj") %>:</strong></dt>
+  <dd><%= @client.cnpj %></dd>
+  <dt><strong><%= model_class.human_attribute_name("email") %>:</strong></dt>
+  <dd><%= @client.email %></dd>
+  <hr />
+  <dt><strong><%= model_class.human_attribute_name("status") %>:</strong></dt>
+  <dd><%= @client.status %></dd>
+  <dt><strong><%= model_class.human_attribute_name("descrição") %>:</strong></dt>
+  <dd><%= @client.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name("valor R$") %>:</strong></dt>
+  <dd><%= @client.value %></dd>
+  <dt><strong><%= model_class.human_attribute_name("Vencimento") %>:</strong></dt>
+  <dd><%= @client.due_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name("Obs") %>:</strong></dt>
+  <dd><%= @client.obs %></dd>
+</dl>
+
+<% if @client.status == 'CONTRATO' %>
+<%= link_to 'Efetuar baixa', baixa_comprovante_client_path(@client), method: :post, class: 'btn btn-default' %>
+
+<%= link_to 'Download contrato', download_client_path(@client), method: :get, class: 'btn btn-default' %>	
+<% end %>
+
+<%= link_to "Voltar",
+              clients_path, :class => 'btn btn-default'  %>
+<%= link_to "Editar",
+              edit_client_path(@client), :class => 'btn btn-default' %>
+<%= link_to "Excluir",
+              client_path(@client),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

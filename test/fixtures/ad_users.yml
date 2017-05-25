@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  colaborador: MyString
+  departamento: MyString
+  user_ad: MyString
+  senha: MyString
+  ip: MyString
+  pastas: MyText
+
+two:
+  colaborador: MyString
+  departamento: MyString
+  user_ad: MyString
+  senha: MyString
+  ip: MyString
+  pastas: MyText

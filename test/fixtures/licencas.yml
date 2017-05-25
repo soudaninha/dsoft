@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  produto: MyString
+  serial: MyString
+  patrimonio_id: 
+
+two:
+  produto: MyString
+  serial: MyString
+  patrimonio_id: 

@@ -1,0 +1,47 @@
+<%- model_class = ExtraSale -%>
+<div class="page-header">
+  <h1>Serviços extras</h1>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_extra_sale_path,
+            :class => 'btn btn-primary' %>
+
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name('cliente') %></th>
+      <th><%= model_class.human_attribute_name('descrição') %></th>
+      <th><%= model_class.human_attribute_name('valor') %></th>
+      <th><%= model_class.human_attribute_name('data vencto') %></th>
+      <th><%= model_class.human_attribute_name('obs') %></th>
+      
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @extra_sales.each do |extra_sale| %>
+      <tr>
+        <td><%= link_to extra_sale.id, extra_sale_path(extra_sale) %></td>
+        <td><%= extra_sale.client.name %></td>
+        <td><%= extra_sale.product %></td>
+        <td><%= number_with_precision(extra_sale.value, precision: 2) %></td>
+        <td><%= extra_sale.due_date %></td>
+        <td><%= extra_sale.obs %></td>
+        
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_extra_sale_path(extra_sale), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      extra_sale_path(extra_sale),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Total Geral R$ <%= number_with_precision(@total_geral, precision: 2) %></h3>
+

@@ -1,0 +1,29 @@
+<%- model_class = AdUser -%>
+<div class="page-header">
+  <h1>Usuário Active Directory</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:colaborador) %>:</strong></dt>
+  <dd><%= @ad_user.colaborador %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:departamento) %>:</strong></dt>
+  <dd><%= @ad_user.departamento %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:user_ad) %>:</strong></dt>
+  <dd><%= @ad_user.user_ad %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:senha) %>:</strong></dt>
+  <dd><%= @ad_user.senha %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:ip) %>:</strong></dt>
+  <dd><%= @ad_user.ip %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:pastas) %>:</strong></dt>
+  <dd><%= @ad_user.pastas %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              ad_users_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_ad_user_path(@ad_user), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              ad_user_path(@ad_user),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

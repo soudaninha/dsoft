@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th> <%= 'produto' %></th>
+      <th><%= 'qnt' %></th>
+      <th><%= 'total' %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+ 
+ 	<% @invoice.items.each do |item| %>
+        <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.qnt %></td>
+        <td><%= item.total_value %></td>
+        
+	        <% if @invoice.status == 'FINALIZADA' || @invoice.status == 'RECEBIDA' %>
+	      		<td><%= link_to t('.destroy', :default => t("helpers.links.destroy")), [item.invoice, item], :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger', disabled: true %>
+		      	<% else %> 
+		        <td><%= link_to t('.destroy', :default => t("helpers.links.destroy")), [item.invoice, item], :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger' %>
+		        </td>
+	        <% end %>
+      </tr>
+      <% end %>
+       </tbody>
+       
+   </table>
+
+

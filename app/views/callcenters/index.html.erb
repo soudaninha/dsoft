@@ -1,0 +1,40 @@
+<%- model_class = Callcenter -%>
+<div class="page-header">
+  <h1>Chamados abertos</h1>
+</div>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_callcenter_path,
+            :class => 'btn btn-primary' %>
+            
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name('cliente') %></th>
+      <th><%= model_class.human_attribute_name('funcionário') %></th>
+      <th><%= model_class.human_attribute_name('departamento') %></th>
+      <th><%= model_class.human_attribute_name('status') %></th>
+      <th><%= model_class.human_attribute_name('criado em') %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @callcenters.each do |callcenter| %>
+      <tr>
+        <td><%= link_to callcenter.client.name, callcenter_path(callcenter) %></td>
+        <td><%= callcenter.employee %></td>
+        <td><%= callcenter.department %></td>
+        <td><%= callcenter.status %></td>
+        <td><%= callcenter.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_callcenter_path(callcenter), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      callcenter_path(callcenter),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

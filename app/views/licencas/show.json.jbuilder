@@ -1,0 +1,1 @@
+json.partial! "licencas/licenca", licenca: @licenca

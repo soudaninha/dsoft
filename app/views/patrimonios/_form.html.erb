@@ -1,0 +1,49 @@
+<%= form_for @patrimonio, :html => { :class => "form-horizontal patrimonio" } do |f| %>
+
+  <% if @patrimonio.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@patrimonio.errors.count, "error") %> prohibited this patrimonio from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @patrimonio.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label 'codigo patrimonio', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-2">
+      <%= f.text_field :numero_patrimonio, :class => 'form-control', :onblur=>"this.value=this.value.toUpperCase()" %>
+    </div>
+    <%=f.error_span(:numero_patrimonio) %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'descrição', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-5">
+      <%= f.text_field :descricao, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:descricao) %>
+  </div>
+
+<div class="form-group">
+    <%= f.label 'usuário', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-3">
+      <%= f.collection_select(:ad_user_id, @ad_users, :id, :colaborador, {include_blank: 'Selecione o usuário'},:class => 'form-control') %>
+    </div>
+    <%=f.error_span(:ad_user_id) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit 'Salvar', data: { disable_with: "Processando..." }, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                patrimonios_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>
