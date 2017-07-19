@@ -36,11 +36,11 @@
     </div>
     <%=f.error_span(:password) %>
   </div>
-  
+
 <div class="form-group">
     <%= f.label "tipo de acesso", :class => 'control-label col-lg-2' %>
     <div class="col-lg-2">
-    <% if current_user.type_access == 'USER' %>	
+    <% if current_user.type_access == 'USER' %>
       <%= f.select(:type_access, options_for_select([["MASTER"], ["ADMIN"],["USER"]], @user.type_access), {include_blank: 'Selecione'}, disabled: true ,:class => 'form-control') %>
     <% elsif current_user.type_access == 'ADMIN' %>
    	  <%= f.select(:type_access, options_for_select([["ADMIN"],["USER"]], @user.type_access), {include_blank: 'Selecione'},:class => 'form-control') %>
@@ -56,6 +56,7 @@
 <h5><%= "Cadastros" %></h5>
   <%= f.check_box :ccall %>&nbsp;<%= f.label "abertura de chamados" %>
   <%= f.check_box :ccli %>&nbsp;<%= f.label "clientes" %>
+  <%= f.check_box :cmon %>&nbsp;<%= f.label "contas fixas" %>
   <%= f.check_box :cforn %>&nbsp;<%= f.label "fornecedores" %><br />
   <%= f.check_box :clic %>&nbsp;<%= f.label "licença de softwares" %>
   <%= f.check_box :cpat %>&nbsp;<%= f.label "patrimonio" %>
@@ -63,17 +64,17 @@
   <%= f.check_box :cservidor %>&nbsp;<%= f.label "servidor DNS" %>
   <%= f.check_box :cextra_sale %>&nbsp;<%= f.label "Serviços extras" %>
   <%= f.check_box :cuser %>&nbsp;<%= f.label "usuários" %>
-  
+
   <h5><%= "Movimentações" %></h5>
   <%= f.check_box :mos %>&nbsp;<%= f.label "Orçamentos / Ordem de Serviço" %>
   <%= f.check_box :mpainel_servproject %>&nbsp;<%= f.label "Painel - Servproject" %>
   <%= f.check_box :mupload %>&nbsp;<%= f.label "Uploads" %>
-  
+
   <h5><%= "Financeiro" %></h5>
   <%= f.check_box :fpag %>&nbsp;<%= f.label "contas ragar" %>
   <%= f.check_box :frec %>&nbsp;<%= f.label "contas receber" %>
   <%= f.check_box :fgeral %>&nbsp;<%= f.label "Verificação geral" %>
-  
+
   <h5><%= "Relatórios" %></h5>
   <%= f.check_box :rcall %>&nbsp;<%= f.label "dashboards" %>
   <%= f.check_box :rcli %>&nbsp;<%= f.label "clientes" %>

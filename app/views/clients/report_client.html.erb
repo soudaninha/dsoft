@@ -16,29 +16,25 @@
 <div class="container-fluid">
 <%- model_class = Client -%>
 <div class="page-header">
-  <h2>Relatório geral de Clientes <%= image_tag "logo.png" %></h2>
+  <h2>Controle financeiro mensal <%= image_tag "logo.png" %></h2>
   Gerado em: <%= Time.now.strftime("%d/%m/%Y %H:%M") %><br />
   <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
   </div>
- 
+
  <table class="table table-striped">
   <thead>
     <tr>
-      
+
       <th><%= model_class.human_attribute_name("Nome") %></th>
       <th><%= model_class.human_attribute_name("Vencimento") %></th>
       <th><%= model_class.human_attribute_name("Valor") %></th>
       <th>Pago?</th>
-      
-      
-      
-      </tr>
+    </tr>
   </thead>
   <tbody>
     <% @clients.each do |client| %>
       <tr>
-        
-        <td><%= client.name %></td>
+      <td><%= client.name %></td>
         <% if client.due_date.blank? %>
         <td>Sem contrato</td>
         <% else %>
@@ -49,8 +45,7 @@
         <% else %>
         <td><%= client.value %></td>
         <% end %>
-        
-        <td>       </td>
+      <td>       </td>
       </tr>
     <% end %>
   </tbody>
@@ -61,3 +56,26 @@ Total de Clientes cadastrados: <b><%= @total_clients %></b>
 Total de contratos: <b><%= @total_contract %></b> / Mensal fixo R$: <b><%= @total_value %></b>
 
 </div>
+
+<hr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+            <th><%= model_class.human_attribute_name('Descrição') %></th>
+      <th><%= model_class.human_attribute_name('Data vencimento') %></th>
+      <th><%= model_class.human_attribute_name('Valor') %></th>
+      <th><%= model_class.human_attribute_name('Pago?') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @monthly_accounts.each do |monthly_account| %>
+      <tr>
+        <td><%= monthly_account.description %></td>
+        <td><%= monthly_account.due_date %></td>
+          <td><%= monthly_account.value_doc %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+Total Geral R$ <%= @total_monthly %>

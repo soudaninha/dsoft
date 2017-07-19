@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :must_login, only: [:index, :show, :edit, :update, :destroy, :new]
   #verifica se o usuario é um usuario simples e bloqueia se tentar acessar as configurações de todos usuarios via url
   before_action :check_user_logged, only: [:index]
-  
+
 
   #chama a edição do usuario que está logado
   def chama_edicao
@@ -17,13 +17,13 @@ class UsersController < ApplicationController
   def index
     @users = User.limit(10)
     @total_users = User.count
-    
+
     if params[:search] && params[:tipo_consulta] == "1"
           @users = User.where("name like ?", "%#{params[:search]}%")
-            
+
             elsif params[:search] && params[:tipo_consulta] == "2"
                 @users = User.where("email like ?", "%#{params[:search]}%")
-            
+
         end
   end
 
@@ -92,9 +92,9 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :type_access,:ccli,:cforn,:cpat,:cprod,:cservidor,:cuser,:mos,:fpag,:frec,:rcli,:rforn,:rpat,:rprod,:rpag,:rrec,:mupload, :clic, :ccall, :rcall, :mpainel_servproject, :cextra_sale, :fgeral)
+      params.require(:user).permit(:name, :email, :password, :type_access,:ccli,:cforn,:cpat,:cprod,:cservidor,:cuser,:mos,:fpag,:frec,:rcli,:rforn,:rpat,:rprod,:rpag,:rrec,:mupload, :clic, :ccall, :rcall, :mpainel_servproject, :cextra_sale, :fgeral, :cmon)
     end
-    
+
     #verifica o perfil do usuario
     def check_user_logged
       if current_user.type_access == 'User'
@@ -102,5 +102,5 @@ class UsersController < ApplicationController
         redirect_to root_path
       end
     end
-    
+
 end

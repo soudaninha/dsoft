@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124221007) do
+ActiveRecord::Schema.define(version: 20170719191019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,6 +186,14 @@ ActiveRecord::Schema.define(version: 20170124221007) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "monthly_accounts", force: :cascade do |t|
+    t.date     "due_date"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.decimal  "value_doc"
+  end
+
   create_table "patrimonios", force: :cascade do |t|
     t.string   "numero_patrimonio"
     t.string   "descricao"
@@ -287,6 +295,7 @@ ActiveRecord::Schema.define(version: 20170124221007) do
     t.boolean  "mpainel_servproject"
     t.boolean  "cextra_sale"
     t.boolean  "fgeral"
+    t.boolean  "cmon"
   end
 
   add_foreign_key "callcenters", "clients"

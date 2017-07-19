@@ -1,0 +1,23 @@
+<%- model_class = MonthlyAccount -%>
+<div class="page-header">
+  <h1>Conta fixa</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name('Data vencimento') %>:</strong></dt>
+  <dd><%= @monthly_account.due_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name('Descrição') %>:</strong></dt>
+  <dd><%= @monthly_account.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name('Valor R$') %>:</strong></dt>
+  <dd><%= @monthly_account.value_doc %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              monthly_accounts_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_monthly_account_path(@monthly_account), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              monthly_account_path(@monthly_account),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

@@ -1,0 +1,1 @@
+json.partial! "monthly_accounts/monthly_account", monthly_account: @monthly_account

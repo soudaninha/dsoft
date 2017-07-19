@@ -1,0 +1,47 @@
+<%= form_for @monthly_account, :html => { :class => "form-horizontal monthly_account" } do |f| %>
+
+  <% if @monthly_account.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@monthly_account.errors.count, "error") %> prohibited this monthly_account from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @monthly_account.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label 'Data vencto', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-3">
+      <%= f.date_field :due_date, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:due_date) %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'Descrição', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-4">
+      <%= f.text_field :description, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:description) %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'Valor R$', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-2">
+      <%= f.text_field :value_doc, :class => 'form-control', id: 'real' %>
+    </div>
+    <%=f.error_span(:value_doc) %>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit 'Salvar', :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                monthly_accounts_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

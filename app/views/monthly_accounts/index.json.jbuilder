@@ -1,0 +1,1 @@
+json.array! @monthly_accounts, partial: 'monthly_accounts/monthly_account', as: :monthly_account
