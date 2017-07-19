@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="D&D Support Service - Consultoria em T.I and God ever!!!">
+    <link rel="icon" href="../../images/favicon.ico">
+	
+  <title>DsoftWeb</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  
+  <!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+</style>
+
+</head>
+<body>
+	
+	<div class="container-fluid">
+<%- model_class = Invoice -%>
+
+<%= image_tag "header.png" %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+  	
+    <h1 class="panel-title"><%= @invoice.type_invoice %> Nº <font color="red"><%= @invoice.id %></font></h1>
+  </div><!-- fim .panel-heading -->
+  <div class="panel-body">
+
+<dl class="dl-horizontal">
+
+  <strong><%= model_class.human_attribute_name('cliente') %>:</strong>
+  &nbsp;<%= @invoice.client.name %><br />
+  <strong><%= model_class.human_attribute_name('endereço') %>:</strong>
+  &nbsp;<%= @invoice.client.address %>&nbsp;
+  <strong><%= model_class.human_attribute_name('bairro') %>:</strong>
+  &nbsp;<%= @invoice.client.neighborhood %><strong>&nbsp;
+  <%= model_class.human_attribute_name('cidade') %>:</strong>
+  &nbsp;<%= @invoice.client.cidade_id %><br />
+  <strong><%= model_class.human_attribute_name('UF') %>:</strong>
+  &nbsp;<%= @invoice.client.estado_id %>&nbsp;
+  <strong><%= model_class.human_attribute_name('Cep') %>:</strong>
+  &nbsp;<%= @invoice.client.zipcode %>&nbsp;
+  <strong><%= model_class.human_attribute_name('Cnpj') %>:</strong>
+  &nbsp;<%= @invoice.client.cnpj %>&nbsp;
+  <strong><%= model_class.human_attribute_name('fone') %>:</strong>
+  &nbsp;<%= @invoice.client.phone %><br />
+  <strong><%= model_class.human_attribute_name('celular') %>:</strong>
+  &nbsp;<%= @invoice.client.cellphone %>&nbsp;
+  <strong><%= model_class.human_attribute_name('email') %>:</strong>
+  <%= @invoice.client.email %></dd>
+  
+</dl>
+  </div><!-- fim .panel-body -->
+</div><!-- fim .panel -->
+
+ <h3>Descrição dos itens</h3>
+ 
+ <table class="table table-striped">
+  <thead>
+    <tr>
+      <th> <%= 'produto' %></th>
+      <th><%= 'qnt' %></th>
+      <th><%= 'total' %></th>
+     
+    </tr>
+  </thead>
+  <tbody>
+ 
+ 	<% @invoice.items.each do |item| %>
+        <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.qnt %></td>
+        <td><%= item.total_value %></td>
+        </tr>
+      <% end %>
+       </tbody>
+      
+   </table>
+   
+  
+ 	<!-- EXIBE A QUANTIDADE DE ITENS NA O.S -->
+ 	<div class="panel panel-default">
+  		<div class="panel-heading">
+    <h1 class="panel-title">Forma de pagamento: <strong><%= @invoice.form_receipt %></strong> / <%= @invoice.items.count %> Itens / Total geral: <strong>R$ <%= @total_items %></strong></font></h1>
+  </div><!-- fim .panel-heading -->
+ </div>	
+ 
+
+<h2>Dados bancários:</h2>
+
+<h4>Banco Bradesco:</h4>
+Agencia: 0538<br />
+Poupança: 1013541-9
+<h4>Banco Caixa Econômica federal</h4>
+Agencia: 4026<br />
+Conta corrente: 22031-1<br />
+Operação: 001
+<h4>Banco Itaú</h4>
+Agencia: 0559
+Conta corrente: 44107-6
+<br />
+Favorecido: Ademir de Góes Gomes<br />
+CPF: 272.589.528-61<p></p>
+<br />
+<br />
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+São Paulo, <%= DateTime.now.strftime("%d/%m/%Y") %> 
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font size="5">D & D Support Service - Consultoria em T.I.</font>
+<p>
+&nbsp;&nbsp;<button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+
+	 
+</body>
+</html>
+<%= link_to "Voltar", invoices_path, :class => 'btn btn-default', id: 'printbtn' %> 	
+</div>
+ 
+ 

@@ -1,0 +1,63 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+</style>
+
+<!-- INSERI ESSA VERIFICAÇÃO DE AMBIENTE PRA CARREGAR OS PDF'S TANTO LOCALMENTE QUANTO NO HEROKU -->
+<% if Rails.env.development? %>
+  <style type="text/css">
+    <%= Rails.application.assets.find_asset('application.css').to_s.html_safe %>
+</style>
+<% end %>
+<div class="container-fluid">
+<%- model_class = Client -%>
+<div class="page-header">
+	
+  <h2>Relatório geral de Produtos <%= image_tag "logo.png" %></h2>
+  Gerado em: <%= Time.now.strftime("%d/%m/%Y %H:%M") %> <br />
+  <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+  
+  </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th><%= model_class.human_attribute_name("nome") %></th>
+      <th><%= model_class.human_attribute_name("estoque") %></th>
+      <th><%= model_class.human_attribute_name("Qnt") %></th>
+      <th><%= model_class.human_attribute_name("valor custo R$") %></th>
+      <th><%= model_class.human_attribute_name("valor venda R$") %></th>
+      <th><%= model_class.human_attribute_name("fornecedor") %></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        
+        <td><%= product.name %></td>
+        <% if product.check_stock == true %>
+        <td><%= 'SIM' %></td>
+        <% else %>
+        <td><%= 'NÃO' %></td>
+        <% end %>
+        <td><%= product.qnt %></td>
+        <td><%= product.cost_value %></td>
+        <td><%= product.cost_sale %></td>
+        <td><%= product.supplier.name %></td>
+        
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total de produtos: <b><%= @total_products %></b>
+            
+</div>
+

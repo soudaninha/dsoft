@@ -1,0 +1,69 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+    // remove o link da impressão
+  }
+} 
+</style>
+
+<%- model_class = AdUser -%>
+<div class="page-header">
+  <h1>Usuários do Active Directory</h1>
+  <%= link_to t('.new', :default => t("helpers.links.new")),
+            new_ad_user_path,
+            :class => 'btn btn-primary',id: 'printbtn' %>
+  <%= link_to 'Painel de controle', dashboard_servproject_path, class: 'btn btn-default', id: 'printbtn' %>
+
+  <%= link_to 'Excel Download', ad_users_path(:format => :xls, :exportar => 'SIM'), class: 'btn btn-success', id: 'printbtn' %>
+ 
+
+  <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+            
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:colaborador) %></th>
+      <th><%= model_class.human_attribute_name(:departamento) %></th>
+      <th><%= model_class.human_attribute_name('usuário AD') %></th>
+      <th><%= model_class.human_attribute_name(:senha) %></th>
+      <th><%= model_class.human_attribute_name(:ip) %></th>
+      <th><%= model_class.human_attribute_name(:pastas) %></th>
+      <th><%= model_class.human_attribute_name('criado em') %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ad_users.each do |ad_user| %>
+      <tr>
+        <td><%= link_to ad_user.colaborador, ad_user_path(ad_user) %></td>
+        <td><%= ad_user.departamento %></td>
+        <td><%= ad_user.user_ad %></td>
+        <td><%= ad_user.senha %></td>
+        <td><%= ad_user.ip %></td>
+        <td><%= ad_user.pastas %></td>
+        <td><%= ad_user.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_ad_user_path(ad_user), :class => 'btn btn-default btn-xs', id: 'printbtn' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      ad_user_path(ad_user),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger', id: 'printbtn' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total de usuários cadastrados: <b><%= @conta_users %></b>
+

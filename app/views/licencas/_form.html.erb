@@ -1,0 +1,97 @@
+<script>
+// AQUI É FEITA A CONSULTA COM BASE NO PRODUTO SELECIONADO NO COMBOBOX E EXIBIDO NOS TEXTFIELDS O RESULTADO
+$(document).ready(function() {
+    $("#selectpatrimonio").change(function(){
+  	// limpa os campos primeiro
+  	$("#descricao").val('');
+  	     
+    	$.ajax({
+    		url: '/consulta_patrimonio.json',
+    		data: {
+    			name: $("#selectpatrimonio option:selected").text(),
+    		},
+    		datatype: "script",
+    		
+    		success: function(obj){
+        	$('#descricao').val(obj.descricao);
+        	       	
+      	
+        },
+        error: function(){
+            console.log(arguments);
+        }
+    		
+    	});
+   	});
+ });
+    	
+</script>
+
+
+
+
+<%= form_for @licenca, :html => { :class => "form-horizontal licenca" } do |f| %>
+
+  <% if @licenca.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@licenca.errors.count, "error") %> prohibited this licenca from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @licenca.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :produto, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-4">
+      <%= f.text_field :produto, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:produto) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :serial, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-5">
+      <%= f.text_field :serial, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:serial) %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label 'cód patrimonio', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-3">
+      <%= f.collection_select(:patrimonio_id, @patrimonios, :id, :numero_patrimonio, {include_blank: 'Selecione o Código'},:class => 'form-control', id: 'selectpatrimonio') %>
+    </div>
+    <%=f.error_span(:patrimonio_id) %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label 'descrição', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-4">
+     <%= f.text_field :descricao, :class => 'form-control', id: 'descricao', readonly: 'true' %>
+    </div>
+  </div>
+  
+    <div class="form-group">
+    <%= f.label 'Status', :class => 'control-label col-lg-2' %>
+    <div class="col-lg-4">
+      <%= f.select(:status, options_for_select([["OK - Em uso"], ["OK - Sem utilização"], ["Sem documentação"]], @licenca.status), {include_blank: 'Selecione'}, :class => 'form-control') %>
+
+    </div>
+  </div>
+  
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit 'Salvar', data: { disable_with: "Processando..." }, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                licencas_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

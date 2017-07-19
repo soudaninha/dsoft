@@ -1,0 +1,204 @@
+
+<% if !logged_in? %>
+     	    	
+    <div style="background: url('images/banner1.jpg')no-repeat center; height: 400px;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    color: #FFF;" class="jumbotron">
+    
+     
+    </div>
+    <div class="container">
+   		<p><a class="btn btn-primary btn-lg pull-right" href="http://www.ddti.com.br" role="button">Nosso site &raquo;</a></p>
+      </div>
+
+<% else %> 
+
+
+<!-- se tiver cliente em aberto ele informa -->
+<% if @clients.present? && current_user.fpag %>  
+        
+        <h4>Temos Clientes com o pagamento mensal pendente!</h4>
+
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th>Nome</th>
+      <th>Data Vencimento</th>
+      <th>Valor</th>
+           
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @clients.each do |client| %>
+      <tr>
+        
+        <td><%= link_to client.name, client_path(client) %></td>
+        <td><%= client.due_date %></td>
+        <td><%= client.value %></td>
+                       
+        <td>
+          <%= link_to 'Editar / Baixar',
+                      client_path(client), :class => 'btn btn-default btn-xs' %>
+          
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
+<p>   
+<% end %>    
+
+<!-- se tiver contas á pagar em aberto ele informa -->
+<% if @payments.present? && current_user.fpag? && current_user.type_access == 'MASTER' %>  
+        
+        <h4>Temos Contas á Pagar pendentes!</h4>
+
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th>Nº docto</th>
+      <th>tipo docto</th>
+      <th>fornecedor</th>
+      <th>descrição</th>
+      <th>vencto</th>
+      <th>pagto</th>
+      <th>Nº parc.</th>
+      <th>valor R$</th>
+      <th>status</th> 
+      
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @payments.each do |payment| %>
+      <tr>
+        
+        <td><%= link_to payment.doc_number, payment_path(payment) %></td>
+        <td><%= payment.type_doc %></td>
+        <td><%= payment.supplier.name %></td>
+        <td><%= payment.description %></td>
+        <td><%= payment.due_date %></td>
+        <td><%= payment.payment_date %></td>
+        <td><%= payment.installments %></td>
+        <td><%= payment.value_doc %></td>
+        <td><%= payment.status %></td>
+               
+        <td>
+          <%= link_to 'Editar / Baixar',
+                      edit_payment_path(payment), :class => 'btn btn-default btn-xs' %>
+          
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
+Total R$: <b><%= @total_payments %></b>  
+<p>   
+<% end %>    
+<!-- AQUI COMEÇA O CONTAS Á RECEBER -->
+<% if @receipts.present? && current_user.frec.present? && current_user.type_access == 'MASTER' %>
+<hr>	
+        <h4>Temos Contas á Receber pendentes!</h4>
+        <table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th>Nº doc</th>
+      <th>tipo doc</th>
+      <th>cliente</th>
+      <th>descrição</th>
+      <th>data vencto</th>
+      <th>data recebto</th>
+      <th>parc</th>
+      <th>Doc R$</th>
+      <th>Status</th>
+      
+      
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @receipts.each do |receipt| %>
+      <tr>
+        
+        <td><%= link_to receipt.doc_number, receipt_path(receipt) %></td>
+        <td><%= receipt.type_doc %></td>
+        <td><%= receipt.client.name %></td>
+        <td><%= receipt.discription %></td>
+        <td><%= receipt.due_date %></td>
+        <td><%= receipt.receipt_date %></td>
+        <td><%= receipt.installments %></td>
+        <td><%= receipt.value_doc %></td>
+        <td><%= receipt.status %></td>
+        
+        <td>
+          
+          <%= link_to 'Editar / Baixar',
+                      edit_receipt_path(receipt), :class => 'btn btn-default btn-xs' %>
+          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total Geral R$ <b><%= number_with_precision(@total_receipts, precision: 2) %></b>
+
+  <% end %> 
+  <hr />
+   
+   <!-- VERIFICA SE TEM HOSPEDAGENS VENCIDAS -->
+  <% if @extra_sales.present? && current_user.type_access == 'MASTER' %>
+      <h4>Temos Planos de hospedagem vencendo este mês!</h4>
+      <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>cliente</th>
+      <th>descrição</th>
+      <th>valor</th>
+      <th>data vencto</th>
+      <th>obs</th>
+      
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @extra_sales.each do |extra_sale| %>
+      <tr>
+        <td><%= link_to extra_sale.id, extra_sale_path(extra_sale) %></td>
+        <td><%= extra_sale.client.name %></td>
+        <td><%= extra_sale.product %></td>
+        <td><%= number_with_precision(extra_sale.value, precision: 2) %></td>
+        <td><%= extra_sale.due_date %></td>
+        <td><%= extra_sale.obs %></td>
+        
+        <td><%= link_to t('editar', :default => t("helpers.links.edit")),
+                      edit_extra_sale_path(extra_sale), :class => 'btn btn-default btn-xs' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total Geral R$ <b><%= number_with_precision(@total_geral, precision: 2) %></b>
+      
+   <% end %>
+  
+  <!-- SE NÃO TIVER NADA DE CONTAS Á PAGAR E RECEBER -->
+	<% if @payments.blank? && @receipts.blank? && current_user.type_access == 'MASTER'  %>
+	<div class="jumbotron">
+	      <div class="container">
+	       <p>Não existem contas á pagar ou receber pendentes vencendo hoje.</p>
+	      </div>
+	    </div> 
+	<% end %>     
+  
+<% end %> 
+<hr />    
+<p>&copy; <%= @date %> - D&D Support Service - Consultoria em T.I.</p>

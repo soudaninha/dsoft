@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="D&D Support Service - Consultoria em T.I and God ever!!!">
+    <link rel="icon" href="../../images/favicon.ico">
+	
+  <title>DsoftWeb</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  
+  <!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+</style>
+
+</head>
+<body>
+	
+	<div class="container-fluid">
+<%- model_class = Invoice -%>
+
+<%= image_tag "header.png" %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+  	
+    <h1 class="panel-title">Comprovante de pagamento</h1>
+  </div><!-- fim .panel-heading -->
+  <div class="panel-body">
+
+<dl class="dl-horizontal">
+
+<h7>
+Declaramos ter recebido a importância de R$<%= @client.value %> em depósito bancário<br />
+de: <%= @client.name %>.<br />
+<p>
+Referente á: <%= @client.description %>.
+</h7> 
+  
+</dl>
+  </div><!-- fim .panel-body -->
+</div><!-- fim .panel -->
+ 
+
+
+<b>Observação:</b>
+<br />
+O periodo de validade dos serviços descritos acima foram renovados até: <b><%= @new_date.strftime("%d/%m/%Y") %></b>
+<p></p>
+ 	<!-- EXIBE A QUANTIDADE DE ITENS NA O.S -->
+ 	<div class="panel panel-default">
+  		<div class="panel-heading">
+    <h1 class="panel-title">Total pago: <strong>R$ <%= @client.value %></strong></font></h1>
+  </div><!-- fim .panel-heading -->
+ </div>	
+ 
+ <br>
+<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+São Paulo, <%= DateTime.now.strftime("%d/%m/%Y") %> 
+<br>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font size="5">D & D Support Service - Consultoria em T.I.</font>
+<p>
+&nbsp;&nbsp;<button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+
+	 
+</body>
+</html>
+<%= link_to "Voltar", clients_path, :class => 'btn btn-default', id: 'printbtn' %> 	
+</div>
+ 
+ 

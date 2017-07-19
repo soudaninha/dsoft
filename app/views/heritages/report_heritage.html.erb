@@ -1,0 +1,52 @@
+<!-- CSS PARA REMOVER O BOTÃO IMPRIMIR NA VIEW DE IMPRESSÃO -->
+  <style type="text/css">
+	@media print {
+    #printbtn {
+        display :  none;
+    }
+}
+</style>
+
+<!-- INSERI ESSA VERIFICAÇÃO DE AMBIENTE PRA CARREGAR OS PDF'S TANTO LOCALMENTE QUANTO NO HEROKU -->
+<% if Rails.env.development? %>
+  <style type="text/css">
+    <%= Rails.application.assets.find_asset('application.css').to_s.html_safe %>
+</style>
+<% end %>
+<div class="container-fluid">
+
+<%- model_class = Client -%>
+<div class="page-header">
+  <h2>Relatório geral de Patrimonios <%= image_tag "logo.png" %></h2>
+  Gerado em: <%= Time.now.strftime("%d/%m/%Y %H:%M") %><br />
+  <button type="button" id ="printbtn" class="btn btn-success", onclick ="window.print();return false;">Imprimir</button>
+ 
+  </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th><%= model_class.human_attribute_name("Descrição") %></th>
+      <th><%= model_class.human_attribute_name("Tipo contrato") %></th>
+      <th><%= model_class.human_attribute_name("Cliente") %></th>
+      
+      
+    </tr>
+  </thead>
+  <tbody>
+    <% @heritages.each do |heritage| %>
+      <tr>
+        
+        <td><%= heritage.description %></td>
+        <td><%= heritage.type_contract %></td>
+        <td><%= heritage.client.name %></td>
+        
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total de Patrimonios cadastrados: <b><%= @total_heritages %></b>
+</div>

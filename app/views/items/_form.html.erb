@@ -1,0 +1,108 @@
+<h5>Adicionar item</h5>
+
+<script>
+// AQUI É FEITA A CONSULTA COM BASE NO PRODUTO SELECIONADO NO COMBOBOX E EXIBIDO NOS TEXTFIELDS O RESULTADO
+$(document).ready(function() {
+    $("#selectprod").change(function(){
+  	// limpa os campos primeiro
+  	$("#quant").val('');
+  	$("#total_geral").val('');
+     
+    	$.ajax({
+    		url: '/consulta_prod.json',
+    		data: {
+    			name: $("#selectprod option:selected").text(),
+    		},
+    		datatype: "script",
+    		
+    		success: function(obj){
+        	$('#quantidade').val(obj.qnt);
+        	$('#preco_venda').val(obj.cost_sale);
+        	$('#estoque').val(obj.check_stock);
+        	
+      	
+        },
+        error: function(){
+            console.log(arguments);
+        }
+    		
+    	});
+   	});
+ });
+    	
+</script>
+
+<script>
+$(document).ready(function(){
+$('#quant').on('keyup',function(){
+     var total = $('#quant').val() * $('#preco_venda').val();
+     $('#total_geral').val(total.toFixed(2));
+     
+     var result = $('#quantidade').val() - $('#quant').val();
+     var check_estoque = $('#estoque').val();
+                   
+    if (result < 0 && check_estoque == 'true') {
+    	$('#add').prop('disabled', true);
+    	alert('Você não pode adicionar uma quantidade maior que a do estoque, só existem ' + $('#quantidade').val() + ' produtos no estoque')
+    } else {
+    	$('#add').prop('disabled', false);
+    }
+    
+ 
+});
+});
+</script>
+
+
+<%= form_for ([@invoice, @invoice.items.build]) do |f| %>
+
+<% if @invoice.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@invoice.errors.count, "error") %> prohibited this heritage from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @invoice.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+
+	<div class="col-lg-4">
+	<%= f.collection_select(:product_id, @products, :id, :name, {include_blank: 'Selecione o item'},:class => 'form-control', id: "selectprod") %>
+	</div>
+	
+	<div class="col-lg-1">
+	<input type="text" class="form-control" id="quantidade" placeholder="Stoq", disabled >   
+    </div>
+    
+    <div class="col-lg-1">
+	<input type="text" class="form-control" id="estoque" placeholder="check", disabled >   
+    </div>
+        
+    <div class="col-lg-1">
+	<input type="text" class="form-control" id="preco_venda" placeholder="Unit R$", disabled >   
+    </div>
+    
+    <div class="col-lg-1">
+	<%= f.number_field :qnt, class: "form-control", placeholder: "qnt", id: 'quant' -%>
+	</div>
+		
+	<div class="col-lg-2">	
+	<%= f.text_field :total_value, class: "form-control", placeholder: "Total", id: 'total_geral', readonly: true -%>
+	</div>
+	
+	<% if @invoice.status == 'FINALIZADA' || @invoice.status == 'RECEBIDA' %>
+    <%= f.submit 'Adicionar', disabled: true, class: 'btn btn-primary', id: 'add' %>
+    <% else %>
+    <%= f.submit 'Adicionar', class: 'btn btn-primary', id: 'add' %>
+    <% end %>
+    
+<% end %>
+
+
+

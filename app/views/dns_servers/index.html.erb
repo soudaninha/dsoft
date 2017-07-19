@@ -1,0 +1,59 @@
+<%- model_class = DnsServer -%>
+<div class="page-header">
+  <h1>Servidores DNS</h1>
+  
+<%= form_tag(dns_servers_path, method: :get) do %>
+<div class="form-group">
+		<div class="row">
+			  <div class="col-lg-3">
+			  <%= select_tag(:tipo_consulta, options_for_select([['Email', 1], ['Dns', 2]]), include_blank: 'Pesquisar por:', class: 'form-control')%>
+			</div>
+			</div>
+		<div class="form-group">			  
+		<div class="row">
+			  <div class="col-lg-3">	  
+		<%= text_field_tag(:search, nil, placeholder: 'Digite o parametro...', class: 'form-control') %>	
+		</div>
+		</div>
+		<br />	
+		<%= submit_tag "Consultar", class: 'btn btn-success' %>
+<% end %>
+<%= link_to "Novo", new_dns_server_path, :class => 'btn btn-primary' %>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th><%= model_class.human_attribute_name("email") %></th>
+      <th><%= model_class.human_attribute_name("senha") %></th>
+      <th><%= model_class.human_attribute_name("servidor DNS") %></th>
+      <th><%= model_class.human_attribute_name("cliente") %></th>
+      
+      <th>ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @dns_servers.each do |dns_server| %>
+      <tr>
+        
+        <td><%= link_to dns_server.email, dns_server_path(dns_server) %></td>
+        
+        <td><%= dns_server.password %></td>
+        <td><%= dns_server.dns %></td>
+        <td><%= dns_server.client.name %></td>
+        
+        <td>
+          <%= link_to "Editar",
+                      edit_dns_server_path(dns_server), :class => 'btn btn-default btn-xs' %>
+          <%= link_to "Excluir",
+                      dns_server_path(dns_server),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Você tem certeza?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Total de Servidores DNS cadastrados: <b><%= @total_dns_servers %></b>
